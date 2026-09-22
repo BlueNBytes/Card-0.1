@@ -26,10 +26,13 @@ html, body {
   font-family: system-ui, sans-serif;
   background: var(--bg);
   color: var(--fg);
+  overflow-x: hidden;
 }
 
 .game-container {
   max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
   margin: 0 auto;
   padding: 20px;
   display: flex;
@@ -73,6 +76,7 @@ html, body {
 
 .hand-section {
   width: 100%;
+  box-sizing: border-box;
   border: 1px solid var(--line);
   padding: 10px;
   border-radius: 4px;
@@ -98,25 +102,84 @@ html, body {
 }
 
 .hand {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  min-height: 80px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .card {
-  width: 60px;
-  height: 80px;
+  width: 100%;
+  aspect-ratio: 0.72;
+  min-width: 0;
   border: 2px solid var(--line);
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px;
+  border-radius: 8px;
+  padding: 8px;
   background: var(--bg);
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+.card-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  gap: 6px;
+}
+
+.card .card-header,
+.card .card-footer,
+.card .card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.card .card-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.card .card-type {
+  font-size: 0.6rem;
+  padding: 3px 4px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.card .card-type.type-counter {
+  background: #eef4ff;
+  color: #244a8f;
+}
+
+.card .card-type.type-active {
+  background: #fff2d9;
+  color: #8a5a00;
+}
+
+.card .card-body {
+  justify-content: center;
+}
+
+.card .card-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.card .card-footer {
+  display: block;
+}
+
+.card .card-ability {
+  display: block;
+  color: gray;
+  font-size: 0.68rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .card.playable { cursor: pointer; }
@@ -138,8 +201,9 @@ html, body {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(3, 80px);
-  grid-template-rows: repeat(3, 80px);
+  --cell-size: min(80px, calc((100vw - 58px) / 3));
+  grid-template-columns: repeat(3, var(--cell-size));
+  grid-template-rows: repeat(3, var(--cell-size));
   gap: 5px;
   background: var(--line);
   padding: 5px;
@@ -401,6 +465,71 @@ html, body {
 .lobby-section { width: 100%; max-width: 400px; text-align: center; border: 1px solid var(--line); padding: 20px; border-radius: 8px; background: var(--bg); }
 .lobby-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .join-input { padding: 10px; font-size: 1rem; border: 1px solid var(--line); border-radius: 4px; text-align: center; width: 100%; max-width: 200px; background: var(--bg); color: var(--fg); }
+
+#game-ui {
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .game-container {
+    padding: 12px 10px;
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .hand-section {
+    padding: 7px;
+  }
+
+  .hand-header {
+    font-size: 0.78rem;
+    gap: 6px;
+  }
+
+  .cards-remaining {
+    text-align: right;
+  }
+
+  .hand {
+    gap: 4px;
+  }
+
+  .card {
+    padding: 5px;
+    border-radius: 6px;
+  }
+
+  .card .card-inner {
+    gap: 3px;
+  }
+
+  .card .card-header,
+  .card .card-footer,
+  .card .card-body {
+    gap: 2px;
+  }
+
+  .card .card-name {
+    font-size: clamp(0.55rem, 2.2vw, 0.72rem);
+  }
+
+  .card .card-type {
+    font-size: 0.45rem;
+    padding: 2px 3px;
+  }
+
+  .card .card-value {
+    font-size: clamp(1rem, 5vw, 1.35rem);
+  }
+
+  .card .card-ability {
+    font-size: clamp(0.42rem, 1.8vw, 0.58rem);
+    line-height: 1.15;
+  }
+}
 
 @media (max-width: 720px) {
   .deck-header {

@@ -259,6 +259,7 @@ function generateDeck(player) {
             type: card.type,
             value: card.value === '?' ? 0 : card.value,
             name: card.name,
+            description: card.description || getCardDescription(card),
             id: `${player}-${i}`
           }));
         }
@@ -275,13 +276,31 @@ function generateDeck(player) {
     
     if (isCounter) {
       const val = possibleCounters[Math.floor(Math.random() * possibleCounters.length)];
-      deck.push({ type: 'counter', value: val, name: val.toString(), id: `${player}-${i}` });
+      deck.push({
+        type: 'counter',
+        value: val,
+        name: val.toString(),
+        description: 'Standard number counter. Can capture lower values.',
+        id: `${player}-${i}`
+      });
     } else {
       const activeData = activeCardsData[Math.floor(Math.random() * activeCardsData.length)];
-      deck.push({ type: 'active', value: 0, name: activeData.name, id: `${player}-${i}` });
+      deck.push({
+        type: 'active',
+        value: 0,
+        name: activeData.name,
+        description: activeData.description,
+        id: `${player}-${i}`
+      });
     }
   }
   return deck;
+}
+
+function getCardDescription(card) {
+  if (card.type === 'counter') return 'Standard number counter. Can capture lower values.';
+  const activeCard = activeCardsData.find(({ name }) => name === card.name);
+  return activeCard ? activeCard.description : '';
 }
 
 function drawCards(deck, count) {
@@ -395,14 +414,22 @@ function renderHand(hand, player, containerEl) {
       div.classList.add('inactive');
     }
     
-    let displayValue = card.name;
-    const icon = player === 'X' ? '✕' : '◯';
+    const typeClass = card.type === 'active' ? 'type-active' : 'type-counter';
+    const typeLabel = card.type === 'active' ? 'Spell' : 'Unit';
+    const displayValue = card.type === 'active' ? '?' : card.value;
 
     div.innerHTML = `
-      <div class="card-inner" style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; width: 100%;">
-        <span class="card-corner" style="align-self: flex-start; font-size: 0.8rem;">${icon}</span>
-        <span class="card-center" style="word-break: break-all; text-align: center; font-size: 1.5rem; line-height: 1; font-weight: bold;">${displayValue}</span>
-        <span class="card-corner" style="align-self: flex-end; font-size: 0.8rem;">${icon}</span>
+      <div class="card-inner">
+        <div class="card-header">
+          <span class="card-name">${card.name}</span>
+          <span class="card-type ${typeClass}">${typeLabel}</span>
+        </div>
+        <div class="card-body">
+          <span class="card-value">${displayValue}</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-ability">${card.description || getCardDescription(card)}</span>
+        </div>
       </div>
     `;
     
