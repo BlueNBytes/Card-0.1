@@ -1,0 +1,54 @@
+{
+    "ActiveCards": [
+        {
+            "name": "DoubleShot",
+            "description": "place 2 cards in one go worth 2 points.",
+            "value": 1
+        },
+        {
+            "name": "Swap",
+            "description": "swap any 2 cards on the board.",
+            "value": 3
+        },
+        {
+            "name": "Clone",
+            "description": "clone any card on the board.",
+            "value": 5
+        },
+        {
+            "name": "Shield",
+            "description": "place a shield on any cell.",
+            "value": 4
+        },
+        {
+            "name": "Bomb",
+            "description": "place a bomb on any cell.",
+            "value": 6
+        },
+        {
+            "name": "King",
+            "description": "place a king on any cell.",
+            "value": 9
+        },
+        {
+            "name": "castle",
+            "description": "place a castle on any cell.",
+            "value": 7
+        },
+        {
+            "name": "Queen",
+            "description": "place a queen on any cell.",
+            "value": 8
+        },
+        {
+            "name": "Atomic",
+            "description": "place an atomic bomb on any cell.",
+            "value": 10
+        },
+        {
+            "name": "gamble",
+            "description": "teleport any card on the board."
+        }
+
+    ]
+}

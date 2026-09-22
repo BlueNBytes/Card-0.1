@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deck Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="deck-page">
+    <div class="deck-builder">
+        <header class="deck-header">
+            <div>
+                <h1>Deck Builder</h1>
+                <p class="deck-subtitle">Build a 20-card deck for your match. You can have up to 3 copies of each card.</p>
+            </div>
+            <div class="deck-actions">
+                <a href="Game.html" class="nav-btn">Back to Game</a>
+                <button id="save-btn" class="builder-btn" type="button">Save Deck</button>
+                <button id="clear-btn" class="builder-btn secondary" type="button">Clear</button>
+            </div>
+        </header>
+
+        <div id="save-msg" class="save-msg" style="display:none;">Deck saved!</div>
+
+        <div class="builder-columns">
+            <section class="builder-panel">
+                <h2>Card Catalog</h2>
+                <div id="catalog-grid" class="catalog-grid"></div>
+            </section>
+
+            <section class="builder-panel">
+                <h2>Your Deck <span id="deck-count">0/20</span></h2>
+                <div id="deck-grid" class="deck-grid"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="deck builder.js"></script>
+</body>
+
+</html>

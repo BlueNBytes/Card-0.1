@@ -1,0 +1,17 @@
+there are 2 types of cards
+each player starts with a 5-card hand and draws a replacement from their 20-card deck after each turn
+
+counters:
+have fixed numerical value, can be placed
+ on empty cells or cells occupied by
+  opponent if their numerical value is lower .
+
+Activecards:
+dont have a numerical value holds a description of what they do
+they effect gameplay by casting effects eg . 
+- doubling the value of the cell you place it on
+- placing 2 counters
+
+how to win:
+- get a tic tac toe 
+- if all cards are used the player with the most cells occupied wins

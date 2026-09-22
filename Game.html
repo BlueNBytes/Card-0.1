@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Card 0.1</title>
+  <meta name="description" content="A strategic card-battle twist on classic Tic Tac Toe.">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+</head>
+
+<body>
+  <div class="game-container">
+    <header class="game-header">
+      <h1 class="title">Card 0.1</h1>
+      <p class="subtitle">·Tic tac toe battler·</p>
+    </header>
+
+    <!-- Lobby UI -->
+    <div id="lobby" class="lobby-section">
+      <h2>Online Multiplayer</h2>
+      <div class="lobby-actions">
+        <button id="host-btn" class="reset-btn">Host Game (Player X)</button>
+        <div id="host-info" style="display:none; margin-top: 10px;">
+          <p style="font-size: 0.9rem; margin-bottom: 5px;">Your Game Code:</p>
+          <h3 id="game-code" style="margin: 0; color: var(--accent-x); user-select: all;">...</h3>
+          <p style="font-size: 0.8rem; color: gray; margin-top: 5px;">Waiting for Player O to join...</p>
+        </div>
+      </div>
+      <div style="margin: 20px 0; border-top: 1px solid var(--line); width: 100%;"></div>
+      <div class="lobby-actions">
+        <input type="text" id="join-code" placeholder="Enter Game Code" class="join-input">
+        <button id="join-btn" class="reset-btn" style="margin-top: 10px;">Join Game (Player O)</button>
+      </div>
+      <div style="margin: 20px 0; border-top: 1px solid var(--line); width: 100%;"></div>
+      <div class="lobby-actions">
+        <button id="local-btn" class="reset-btn">Play Locally</button>
+        <a href="Deck.html" class="reset-btn" style="display:inline-block; text-decoration:none; margin-top: 10px;">Open Deck Builder</a>
+      </div>
+    </div>
+
+    <!-- Game UI (Hidden initially) -->
+    <div id="game-ui" style="display:none; width: 100%; flex-direction: column; align-items: center; gap: 20px;">
+      <div id="status" class="status">Player X — Select a card</div>
+
+    <div class="scoreboard" id="scoreboard">
+      <div class="score-item score-x">
+        <span class="score-player">✕</span>
+        <span class="score-cells" id="score-x">0</span>
+      </div>
+      <div class="score-vs">VS</div>
+      <div class="score-item score-o">
+        <span class="score-player">◯</span>
+        <span class="score-cells" id="score-o">0</span>
+      </div>
+    </div>
+
+    <div class="hand-section" id="section-o">
+      <div class="hand-header">
+        <span>
+          <span class="hand-label player-o-text">Player ◯</span>
+          <span class="turn-badge badge-o">Your Turn</span>
+        </span>
+        <span class="cards-remaining">
+          Hand: <span id="cards-o">5 cards</span> · Deck: <span id="deck-o">15 cards</span>
+        </span>
+      </div>
+      <div class="hand" id="hand-o"></div>
+    </div>
+
+    <div id="board" class="board"></div>
+
+    <div class="hand-section" id="section-x">
+      <div class="hand-header">
+        <span>
+          <span class="hand-label player-x-text">Player ✕</span>
+          <span class="turn-badge badge-x">Your Turn</span>
+        </span>
+        <span class="cards-remaining">
+          Hand: <span id="cards-x">5 cards</span> · Deck: <span id="deck-x">15 cards</span>
+        </span>
+      </div>
+      <div class="hand" id="hand-x"></div>
+    </div>
+
+    <p class="rules-hint" id="rules-hint">
+      Select a card from your hand → Click a cell to place it<br>
+      Higher-value cards can <strong>capture</strong> opponent cells · Most cells wins
+    </p>
+
+      <button id="reset" class="reset-btn">
+        <span class="reset-icon">↻</span> New Game
+      </button>
+    </div> <!-- End game-ui -->
+  </div> <!-- End game-container -->
+
+  <script src="tictactoe.js"></script>
+</body>
+
+</html>
