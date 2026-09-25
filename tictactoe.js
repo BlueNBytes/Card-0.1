@@ -27,7 +27,10 @@ const gameCodeEl = document.getElementById('game-code');
 const localBtn = document.getElementById('local-btn');
 
 // Game State
-let board = Array(9).fill(null); 
+const BOARD_SIZE = 5;
+const WIN_LENGTH = 5;
+
+let board = Array(BOARD_SIZE * BOARD_SIZE).fill(null); 
 let handX = []; 
 let handO = [];
 let deckX = [];
@@ -48,12 +51,53 @@ const possibleCounters = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const MAX_DECK_SIZE = 20;
 const HAND_SIZE = 5;
 
-// Winning combinations for Tic Tac Toe
-const winCombos = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-  [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
-  [0, 4, 8], [2, 4, 6]             // Diagonals
-];
+function generateWinCombos() {
+  const combos = [];
+
+  for (let row = 0; row < BOARD_SIZE; row++) {
+    for (let col = 0; col <= BOARD_SIZE - WIN_LENGTH; col++) {
+      const combo = [];
+      for (let step = 0; step < WIN_LENGTH; step++) {
+        combo.push(row * BOARD_SIZE + col + step);
+      }
+      combos.push(combo);
+    }
+  }
+
+  for (let col = 0; col < BOARD_SIZE; col++) {
+    for (let row = 0; row <= BOARD_SIZE - WIN_LENGTH; row++) {
+      const combo = [];
+      for (let step = 0; step < WIN_LENGTH; step++) {
+        combo.push((row + step) * BOARD_SIZE + col);
+      }
+      combos.push(combo);
+    }
+  }
+
+  for (let row = 0; row <= BOARD_SIZE - WIN_LENGTH; row++) {
+    for (let col = 0; col <= BOARD_SIZE - WIN_LENGTH; col++) {
+      const combo = [];
+      for (let step = 0; step < WIN_LENGTH; step++) {
+        combo.push((row + step) * BOARD_SIZE + col + step);
+      }
+      combos.push(combo);
+    }
+  }
+
+  for (let row = 0; row <= BOARD_SIZE - WIN_LENGTH; row++) {
+    for (let col = WIN_LENGTH - 1; col < BOARD_SIZE; col++) {
+      const combo = [];
+      for (let step = 0; step < WIN_LENGTH; step++) {
+        combo.push((row + step) * BOARD_SIZE + col - step);
+      }
+      combos.push(combo);
+    }
+  }
+
+  return combos;
+}
+
+const winCombos = generateWinCombos();
 
 // Load Active Cards and setup UI listeners
 async function loadAndInit() {
@@ -77,7 +121,7 @@ async function loadAndInit() {
 
 function startLocalPlay() {
   myPlayer = 'BOTH';
-  board = Array(9).fill(null);
+  board = Array(BOARD_SIZE * BOARD_SIZE).fill(null);
   deckX = generateDeck('X');
   deckO = generateDeck('O');
   handX = drawCards(deckX, HAND_SIZE);
@@ -169,7 +213,7 @@ function setupConnection() {
     } else if (data.type === 'RESET') {
       if (myPlayer === 'X') {
         // Host re-inits and sends state
-        board = Array(9).fill(null);
+        board = Array(BOARD_SIZE * BOARD_SIZE).fill(null);
         deckX = generateDeck('X');
         deckO = generateDeck('O');
         handX = drawCards(deckX, HAND_SIZE);
@@ -190,7 +234,7 @@ function showGameUI() {
 }
 
 function startGameAsHost() {
-  board = Array(9).fill(null);
+  board = Array(BOARD_SIZE * BOARD_SIZE).fill(null);
   deckX = generateDeck('X');
   deckO = generateDeck('O');
   handX = drawCards(deckX, HAND_SIZE);
@@ -226,7 +270,7 @@ function requestReset() {
     startLocalPlay();
   } else if (myPlayer === 'X') {
     // I am host, just do it
-    board = Array(9).fill(null);
+    board = Array(BOARD_SIZE * BOARD_SIZE).fill(null);
     deckX = generateDeck('X');
     deckO = generateDeck('O');
     handX = drawCards(deckX, HAND_SIZE);
@@ -325,6 +369,8 @@ function updateUI() {
 function renderBoard() {
   boardEl.innerHTML = '';
   boardEl.className = `board turn-${turn.toLowerCase()}`;
+  boardEl.style.gridTemplateColumns = `repeat(${BOARD_SIZE}, var(--cell-size))`;
+  boardEl.style.gridTemplateRows = `repeat(${BOARD_SIZE}, var(--cell-size))`;
 
   board.forEach((cell, i) => {
     const div = document.createElement('div');
@@ -568,15 +614,22 @@ function handleActiveCard(card, index) {
 
 function checkEndGame() {
   let winner = null;
-  for (const [a, b, c] of winCombos) {
-    if (board[a] && board[b] && board[c]) {
-      if (board[a].owner === board[b].owner && board[a].owner === board[c].owner) {
-        winner = board[a].owner;
-        boardEl.children[a].style.border = "2px solid red";
-        boardEl.children[b].style.border = "2px solid red";
-        boardEl.children[c].style.border = "2px solid red";
-        break;
-      }
+
+  for (const combo of winCombos) {
+    const firstCell = board[combo[0]];
+    if (!firstCell) continue;
+
+    const owner = firstCell.owner;
+    const hasWinningLine = combo.every((index) => board[index] && board[index].owner === owner);
+
+    if (hasWinningLine) {
+      winner = owner;
+      combo.forEach((index) => {
+        if (boardEl.children[index]) {
+          boardEl.children[index].style.border = '2px solid red';
+        }
+      });
+      break;
     }
   }
 

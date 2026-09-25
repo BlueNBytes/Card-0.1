@@ -201,9 +201,9 @@ html, body {
 
 .board {
   display: grid;
-  --cell-size: min(80px, calc((100vw - 58px) / 3));
-  grid-template-columns: repeat(3, var(--cell-size));
-  grid-template-rows: repeat(3, var(--cell-size));
+  --cell-size: min(72px, calc((100vw - 90px) / 5));
+  grid-template-columns: repeat(5, var(--cell-size));
+  grid-template-rows: repeat(5, var(--cell-size));
   gap: 5px;
   background: var(--line);
   padding: 5px;
